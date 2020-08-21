@@ -51,6 +51,7 @@
     
     import md5 from 'blueimp-md5'
     import axios from 'axios'
+	import httpAdapter from 'axios/lib/adapters/http'
 
 	export default {
 		name: 'Login',
@@ -88,6 +89,8 @@
 						__EVENTTARGET: '',
 					},
 				}
+
+				axios.defaults.adapter = httpAdapter
 
 				axios(param).then((res) => {
 					console.log(res)
