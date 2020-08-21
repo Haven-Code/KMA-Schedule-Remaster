@@ -47,10 +47,10 @@
 </template>
 
 <script>
-    /* eslint-disable */
-    
-    import md5 from 'blueimp-md5'
-    import axios from 'axios'
+	/* eslint-disable */
+
+	import md5 from 'blueimp-md5'
+	import axios from 'axios'
 	import httpAdapter from 'axios/lib/adapters/http'
 
 	export default {
@@ -58,18 +58,17 @@
 		data() {
 			return {
 				username: '',
-                password: '',
-                source: ''
+				password: '',
+				source: '',
 			}
 		},
 		methods: {
 			doLogin() {
-                const loginUrl = process.env.VUE_APP_API_LOGIN_URL
+				const loginUrl = process.env.VUE_APP_API_LOGIN_URL
 
 				const param = {
 					method: 'POST',
 					url: loginUrl,
-					timeout: 20000,
 					headers: {
 						Connection: 'keep-alive',
 						'Cache-Control': 'max-age=0',
@@ -92,9 +91,13 @@
 
 				axios.defaults.adapter = httpAdapter
 
-				axios(param).then((res) => {
-					console.log(res)
-				})
+				axios(param)
+					.then((res) => {
+						console.log(res)
+					})
+					.catch((err) => {
+						console.log(err)
+					})
 			},
 		},
 	}
