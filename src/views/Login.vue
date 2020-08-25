@@ -27,9 +27,27 @@
 
 					<v-card-text>
 						<v-form>
-							<v-text-field outlined label="Login" name="login" prepend-icon="fas fa-user" type="text" v-model="username" required :counter="10"></v-text-field>
+							<v-text-field
+								outlined
+								label="Login"
+								name="login"
+								prepend-icon="fas fa-user"
+								type="text"
+								v-model="username"
+								required
+								:counter="10"
+							></v-text-field>
 
-							<v-text-field outlined id="password" label="Password" name="password" prepend-icon="fas fa-user-lock" type="password" required v-model="password"></v-text-field>
+							<v-text-field
+								outlined
+								id="password"
+								label="Password"
+								name="password"
+								prepend-icon="fas fa-user-lock"
+								type="password"
+								required
+								v-model="password"
+							></v-text-field>
 						</v-form>
 					</v-card-text>
 
@@ -50,6 +68,7 @@
 	/* eslint-disable */
 	import axios from 'axios'
 	import swal from 'sweetalert'
+	import { mapState } from 'vuex'
 
 	export default {
 		name: 'Login',
@@ -58,8 +77,11 @@
 				username: '',
 				password: '',
 				source: '',
-				submitBtnLoading: false
+				submitBtnLoading: false,
 			}
+		},
+		computed: {
+			...mapState(['user']),
 		},
 		methods: {
 			async doLogin() {
@@ -81,7 +103,7 @@
 				try {
 					let res = await axios.post('https://kma.api.dhpgo.com/.netlify/functions/get-user-info', param)
 
-					console.log(res.data)
+					// console.log(res.data)
 
 					let data = res.data
 
@@ -99,9 +121,8 @@
 								text: 'Server Error ! Please Wait !',
 							})
 						}
-					} else if (data.code === "SUCCESS") {
-
-						console.log(data.data)
+					} else if (data.code === 'SUCCESS') {
+						// console.log(data.data)
 
 						this.$store.commit('user/SET_USER', data.data)
 
@@ -112,7 +133,6 @@
 						})
 
 						this.$router.push({ name: 'Dashboard' })
-
 					}
 				} catch (err) {
 					swal({
@@ -126,6 +146,11 @@
 
 				this.submitBtnLoading = false
 			},
+		},
+		mounted() {
+			if (this.user.isLogined) {
+				this.$router.push({ name: 'Dashboard' })
+			}
 		},
 	}
 </script>
