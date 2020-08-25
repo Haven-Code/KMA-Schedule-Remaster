@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
-    "blueimp-md5": "^2.17.0",
     "core-js": "^3.6.5",
     "secure-ls": "^1.2.6",
+    "sweetalert": "^2.1.2",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuetify": "^2.2.11",

@@ -27,9 +27,9 @@
 
 					<v-card-text>
 						<v-form>
-							<v-text-field outlined label="Login" name="login" prepend-icon="fas fa-user" type="text" v-model="username"></v-text-field>
+							<v-text-field outlined label="Login" name="login" prepend-icon="fas fa-user" type="text" v-model="username" required :counter="10"></v-text-field>
 
-							<v-text-field outlined id="password" label="Password" name="password" prepend-icon="fas fa-user-lock" type="password" v-model="password"></v-text-field>
+							<v-text-field outlined id="password" label="Password" name="password" prepend-icon="fas fa-user-lock" type="password" required v-model="password"></v-text-field>
 						</v-form>
 					</v-card-text>
 
@@ -48,10 +48,8 @@
 
 <script>
 	/* eslint-disable */
-
-	import md5 from 'blueimp-md5'
 	import axios from 'axios'
-	import httpAdapter from 'axios/lib/adapters/http'
+	import swal from 'sweetalert'
 
 	export default {
 		name: 'Login',
@@ -63,44 +61,40 @@
 			}
 		},
 		methods: {
-			doLogin() {
-				const loginUrl = process.env.VUE_APP_API_LOGIN_URL
-
-				const param = {
-					method: 'POST',
-					url: loginUrl,
-					headers: {
-						Connection: 'keep-alive',
-						'Cache-Control': 'max-age=0',
-						Origin: loginUrl,
-						'Upgrade-Insecure-Requests': '1',
-						'Content-Type': 'application/x-www-form-urlencoded',
-						'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.18 Safari/537.36 Edg/75.0.139.4',
-						Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-						Referer: loginUrl,
-						'Accept-Encoding': 'gzip, deflate',
-						'Accept-Language': 'en-US,en;q=0.9',
-					},
-					data: {
-						txtUserName: this.username,
-						txtPassword: md5(this.password),
-						btnSubmit: 'Đăng Nhập',
-						__EVENTTARGET: '',
-					},
+			async doLogin() {
+				if (this.username === '' || this.password === '') {
+					return swal({
+						title: 'Error !',
+						icon: 'error',
+						text: 'Tên Đăng Nhập / Mật Khẩu Không Được Trống !',
+					})
 				}
 
-				axios.defaults.adapter = httpAdapter
+				let param = {
+					username: this.username,
+					password: this.password,
+				}
 
-				axios(param)
-					.then((res) => {
-						console.log(res)
+				try {
+
+					let res = await axios.post(process.env.VUE_APP_API_LOGIN_URL, param)
+
+					console.table(JSON.parse(res.data))
+
+				} catch (err) {
+					return swal({
+						title: 'Error !',
+						icon: 'error',
+						text: err,
 					})
-					.catch((err) => {
-						console.log(err)
-					})
+				}
 			},
 		},
 	}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+	.swal-modal {
+		font-family: Helvetica;
+	}
+</style>
