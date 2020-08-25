@@ -2,9 +2,8 @@ module.exports = {
     state: {
         isLogined: false,
         userData: {
-            name: '',
-            studentID: '',
-            cookie: ''
+            info: null,
+            schedule: null
         }
     },
     mutations: {
