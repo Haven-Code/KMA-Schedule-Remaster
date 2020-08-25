@@ -151,6 +151,8 @@
 			if (this.user.isLogined) {
 				this.$router.push({ name: 'Dashboard' })
 			}
+
+			document.title = "Đăng Nhập"
 		},
 	}
 </script>
