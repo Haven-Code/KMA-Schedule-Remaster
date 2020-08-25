@@ -254,6 +254,8 @@
 			setTimeout(() => {
 				this.overlay = false
 			},1000)
+
+			document.title = "Thời Khoá Biểu"
 			
 		},
 	}
