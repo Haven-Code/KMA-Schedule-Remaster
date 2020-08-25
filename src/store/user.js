@@ -1,12 +1,18 @@
 module.exports = {
+    namespaced: true,
     state: {
         isLogined: false,
-        userData: {
-            info: null,
-            schedule: null
-        }
+        userData: null,
+        userSchedule: null
     },
     mutations: {
+        SET_USER: (state, payload) => {
+            console.log("PA: ", payload)
+
+            state.userData = payload.studentInfo
+            state.userSchedule = payload.schedule
+            state.isLogined = true
+        }
     },
     actions: {
     },

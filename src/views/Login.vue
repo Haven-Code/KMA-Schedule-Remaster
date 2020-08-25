@@ -35,7 +35,7 @@
 
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn color="primary" block depressed @click.prevent="doLogin">
+						<v-btn color="primary" :loading="submitBtnLoading" block depressed @click.prevent="doLogin">
 							<v-icon class="mr-2">fas fa-sign-in-alt</v-icon>
 							Login
 						</v-btn>
@@ -58,6 +58,7 @@
 				username: '',
 				password: '',
 				source: '',
+				submitBtnLoading: false
 			}
 		},
 		methods: {
@@ -70,24 +71,60 @@
 					})
 				}
 
+				this.submitBtnLoading = true
+
 				let param = {
 					username: this.username,
 					password: this.password,
 				}
 
 				try {
+					let res = await axios.post('https://kma.api.dhpgo.com/.netlify/functions/get-user-info', param)
 
-					let res = await axios.post(process.env.VUE_APP_API_LOGIN_URL, param)
+					console.log(res.data)
 
-					console.table(JSON.parse(res.data))
+					let data = res.data
 
+					if (data.code === 'ERROR') {
+						if (data.message.name == 'TransformError') {
+							return swal({
+								title: 'Error !',
+								icon: 'error',
+								text: `Sai Tài Khoản Hoặc Mật Khẩu ! ${data.message.message}`,
+							})
+						} else {
+							return swal({
+								title: 'Response Error !',
+								icon: 'error',
+								text: 'Server Error ! Please Wait !',
+							})
+						}
+					} else if (data.code === "SUCCESS") {
+
+						console.log(data.data)
+
+						this.$store.commit('user/SET_USER', data.data)
+
+						swal({
+							title: 'Login Success !',
+							icon: 'success',
+							text: `Chào ${data.data.studentInfo.displayName} (${data.data.studentInfo.studentCode}) !`,
+						})
+
+						this.$router.push({ name: 'Dashboard' })
+
+					}
 				} catch (err) {
-					return swal({
+					swal({
 						title: 'Error !',
 						icon: 'error',
-						text: err,
+						text: 'Server Error ! Please Wait !',
 					})
+
+					console.log('ERROR: ', err)
 				}
+
+				this.submitBtnLoading = false
 			},
 		},
 	}
