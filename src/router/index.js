@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LD from '../views/LandingPage.vue'
 
+import store from '../store/index'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -26,6 +28,11 @@ const routes = [
 				path: '/',
 				name: 'Dashboard',
 				component: () => import(/* webpackChunkName: "login" */ '../views/Dashboard/Schedule.vue')
+			},
+			{
+				path: '/about',
+				name: 'About',
+				component: () => import(/* webpackChunkName: "login" */ '../views/Dashboard/About.vue')
 			}
 		]
 	}
@@ -36,8 +43,6 @@ const router = new VueRouter({
 	base: process.env.BASE_URL,
 	routes
 })
-
-import store from '../store/index'
 
 router.beforeEach((to, from, next) => {
 	if (to.matched.some(record => record.meta.requiresAuth)) {

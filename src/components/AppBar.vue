@@ -11,40 +11,131 @@
 
 			<v-spacer></v-spacer>
 
-			<p class="text-h6 mt-4 font-weight-light text--white">{{ user.userData.displayName }} ({{ user.userData.studentCode }})</p>
+			<p class="text-h6 mt-4 font-weight-light text--white hidden-sm-and-down mr-2">
+				{{ user.userData.displayName }} ({{ user.userData.studentCode }})
+			</p>
 
+			<v-menu offset-y offset-x>
+				<template v-slot:activator="{ on, attrs }">
+					<v-btn icon color="white" dark v-bind="attrs" v-on="on">
+						<v-icon>fas fa-power-off</v-icon>
+					</v-btn>
+				</template>
+
+				<v-list>
+					<v-list-item>
+						<v-list-item-title @click.prevent="doLogout">
+							<v-icon class="mr-1">fas fa-power-off</v-icon>
+							Thoát
+						</v-list-item-title>
+					</v-list-item>
+				</v-list>
+			</v-menu>
 		</v-app-bar>
 
-		<v-navigation-drawer v-model="drawer" app clipped color="grey lighten-4">
+		<v-navigation-drawer v-model="drawer" app clipped color="grey lighten-4" :permanent="$vuetify.breakpoint.mdAndUp" left>
 			<v-list dense class="grey lighten-4">
-				<v-list-item link>
-					<v-list-item-action>
-						<v-icon>far fa-calendar-alt</v-icon>
-					</v-list-item-action>
+				<v-list-item-group mandatory>
+					<v-list-item link exact :to="{ name: 'Dashboard' }">
+						<v-list-item-action>
+							<v-icon>far fa-calendar-alt</v-icon>
+						</v-list-item-action>
 
-					<v-list-item-content>
-						<v-list-item-title class="grey--text">
-							Thời Khoá Biểu
-						</v-list-item-title>
-					</v-list-item-content>
-				</v-list-item>
+						<v-list-item-content>
+							<v-list-item-title>
+								Thời Khoá Biểu
+							</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+
+					<v-list-item link exact :to="{ name: 'Icalendar' }">
+						<v-list-item-action>
+							<v-icon>fas fa-sync</v-icon>
+						</v-list-item-action>
+
+						<v-list-item-content>
+							<v-list-item-title>
+								Chuyển Sang Icalendar
+							</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+
+					<v-list-item link exact :to="{ name: 'User' }">
+						<v-list-item-action>
+							<v-icon>fas fa-user</v-icon>
+						</v-list-item-action>
+
+						<v-list-item-content>
+							<v-list-item-title>
+								Thông Tin Sinh Viên
+							</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+				</v-list-item-group>
 			</v-list>
+
+			<template v-slot:append>
+				<v-list-item-group mandatory>
+					<v-list-item link exact class="success" dark :to="{ name: 'AppInstall' }">
+						<v-list-item-action>
+							<v-icon class="white--text">fas fa-mobile-alt</v-icon>
+						</v-list-item-action>
+
+						<v-list-item-content>
+							<v-list-item-title>
+								Cài Đặt App Ngay !
+							</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+
+					<v-list-item link exact :to="{ name: 'About' }">
+						<v-list-item-action>
+							<v-icon>fas fa-info-circle</v-icon>
+						</v-list-item-action>
+
+						<v-list-item-content>
+							<v-list-item-title>
+								Thông Tin
+							</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+				</v-list-item-group>
+
+				<p class="text-subtitle-2 text-center mb-0 mt-2">
+					Copyright &copy; {{ getYear }}
+					<a target="_blank" href="https://havencode.net">Haven Code</a>
+				</p>
+				<p class="text-subtitle-2 text-center mb-2 ">
+					Powered By
+					<a href="https://danghoangphuc.com" target="_blank">Phuc Dang</a>
+				</p>
+			</template>
 		</v-navigation-drawer>
 	</div>
 </template>
 
 <script>
 	import { mapState } from 'vuex'
+	import moment from 'moment'
 
 	export default {
 		name: 'AppBar',
 		computed: {
 			...mapState(['user']),
+			getYear() {
+				return moment().format('YYYY')
+			},
 		},
 		data() {
 			return {
-				drawer: true,
+				drawer: null,
 			}
+		},
+		methods: {
+			doLogout() {
+				this.$store.commit('user/LOGOUT')
+				this.$router.replace({ name: 'Login' })
+			},
 		},
 	}
 </script>

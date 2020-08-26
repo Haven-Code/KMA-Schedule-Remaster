@@ -36,6 +36,8 @@
 								v-model="username"
 								required
 								:counter="10"
+								:disabled="disable"
+								@keydown.enter="doLogin"
 							></v-text-field>
 
 							<v-text-field
@@ -47,13 +49,15 @@
 								type="password"
 								required
 								v-model="password"
+								:disabled="disable"
+								@keydown.enter="doLogin"
 							></v-text-field>
 						</v-form>
 					</v-card-text>
 
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn color="primary" :loading="submitBtnLoading" block depressed @click.prevent="doLogin">
+						<v-btn color="primary" @click.prevent="doLogin" :loading="submitBtnLoading" block depressed >
 							<v-icon class="mr-2">fas fa-sign-in-alt</v-icon>
 							Login
 						</v-btn>
@@ -78,6 +82,7 @@
 				password: '',
 				source: '',
 				submitBtnLoading: false,
+				disable: false
 			}
 		},
 		computed: {
@@ -85,7 +90,10 @@
 		},
 		methods: {
 			async doLogin() {
+				this.disable = true
+
 				if (this.username === '' || this.password === '') {
+					this.disable = false
 					return swal({
 						title: 'Error !',
 						icon: 'error',
@@ -109,12 +117,14 @@
 
 					if (data.code === 'ERROR') {
 						if (data.message.name == 'TransformError') {
+							this.disable = false
 							return swal({
 								title: 'Error !',
 								icon: 'error',
 								text: `Sai Tài Khoản Hoặc Mật Khẩu ! ${data.message.message}`,
 							})
 						} else {
+							this.disable = false
 							return swal({
 								title: 'Response Error !',
 								icon: 'error',
@@ -135,6 +145,7 @@
 						this.$router.push({ name: 'Dashboard' })
 					}
 				} catch (err) {
+					this.disable = false
 					swal({
 						title: 'Error !',
 						icon: 'error',
@@ -152,7 +163,7 @@
 				this.$router.push({ name: 'Dashboard' })
 			}
 
-			document.title = "Đăng Nhập"
+			document.title = "Đăng Nhập | KMA Schedule"
 		},
 	}
 </script>
