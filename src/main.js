@@ -4,6 +4,13 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 
+import ICS from 'vue-ics'
+
+Vue.use(ICS, {
+	uidDomain: 'https://danghoangphuc.com',
+	prodId: 'KMAScheduleByDHP'
+})
+
 Vue.config.productionTip = false
 
 new Vue({
