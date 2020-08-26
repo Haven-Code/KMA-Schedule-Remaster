@@ -3,27 +3,41 @@
 <template>
 	<v-row class="fill-height scheduleView">
 		<v-col>
-			
 			<v-overlay absolute :value="overlay" opacity="0.8">
 				<Spinner />
 			</v-overlay>
 
-			<v-sheet height="64">
+			<v-sheet height="8.5vh">
 				<v-toolbar flat color="white">
-					<v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
-						Today
-					</v-btn>
+					<v-tooltip bottom>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn outlined class="mr-4" color="grey darken-2" @click="setToday" v-bind="attrs" v-on="on">
+								Về Hôm Nay
+							</v-btn>
+						</template>
+						<span>Về Trang Có Ngày Hôm Nay</span>
+					</v-tooltip>
 
-					<v-btn fab text small color="grey darken-2" @click="prev">
-						<v-icon small>mdi-chevron-left</v-icon>
-					</v-btn>
+					<v-tooltip bottom>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn fab text small color="grey darken-2" @click="prev" v-bind="attrs" v-on="on">
+								<v-icon small>mdi-chevron-left</v-icon>
+							</v-btn>
+						</template>
+						<span>Trang Trước</span>
+					</v-tooltip>
 
-					<v-btn fab text small color="grey darken-2" @click="next">
-						<v-icon small>mdi-chevron-right</v-icon>
-					</v-btn>
+					<v-tooltip bottom>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn fab text small color="grey darken-2" @click="next" v-bind="attrs" v-on="on">
+								<v-icon small>mdi-chevron-right</v-icon>
+							</v-btn>
+						</template>
+						<span>Trang Sau</span>
+					</v-tooltip>
 
 					<v-toolbar-title v-if="$refs.calendar">
-						{{ $refs.calendar.title }}
+						{{ translateMonth($refs.calendar.title) }}
 					</v-toolbar-title>
 
 					<v-spacer></v-spacer>
@@ -38,16 +52,16 @@
 
 						<v-list>
 							<v-list-item @click="calendar.type = 'day'">
-								<v-list-item-title>Day</v-list-item-title>
+								<v-list-item-title>Ngày</v-list-item-title>
 							</v-list-item>
 							<v-list-item @click="calendar.type = 'week'">
-								<v-list-item-title>Week</v-list-item-title>
+								<v-list-item-title>Tuần</v-list-item-title>
 							</v-list-item>
 							<v-list-item @click="calendar.type = 'month'">
-								<v-list-item-title>Month</v-list-item-title>
+								<v-list-item-title>Tháng</v-list-item-title>
 							</v-list-item>
 							<v-list-item @click="calendar.type = '4day'">
-								<v-list-item-title>4 days</v-list-item-title>
+								<v-list-item-title>4 ngày</v-list-item-title>
 							</v-list-item>
 						</v-list>
 					</v-menu>
@@ -80,21 +94,18 @@
 				>
 					<v-card color="grey lighten-5" min-width="30vh" flat style="opacity: 0.95">
 						<v-toolbar :color="calendarEventDetail.selectedEvent.color" dark>
-							<!-- <v-btn icon>
-							<v-icon>mdi-pencil</v-icon>
-						</v-btn> -->
-
 							<v-toolbar-title v-html="calendarEventDetail.selectedEvent.name"></v-toolbar-title>
 
 							<v-spacer></v-spacer>
 
-							<v-btn icon>
-								<v-icon>mdi-heart</v-icon>
-							</v-btn>
-
-							<v-btn icon>
-								<v-icon>far fa-calendar-plus</v-icon>
-							</v-btn>
+							<v-tooltip bottom>
+								<template v-slot:activator="{ on, attrs }">
+									<v-btn icon v-bind="attrs" v-on="on">
+										<v-icon>far fa-calendar-plus</v-icon>
+									</v-btn>
+								</template>
+								<span>Thêm Ghi Chú</span>
+							</v-tooltip>
 						</v-toolbar>
 
 						<v-card-text>
@@ -123,7 +134,7 @@
 	export default {
 		name: 'Schedule',
 		components: {
-			Spinner
+			Spinner,
 		},
 		data() {
 			return {
@@ -135,10 +146,10 @@
 					events: [],
 					weekdays: [1, 2, 3, 4, 5, 6, 0],
 					typeToLabel: {
-						month: 'Month',
-						week: 'Week',
-						day: 'Day',
-						'4day': '4 Days',
+						month: 'Tháng',
+						week: 'Tuần',
+						day: 'Ngày',
+						'4day': '4 Ngày',
 					},
 				},
 				calendarEventDetail: {
@@ -147,7 +158,7 @@
 					selectedElement: null,
 				},
 				colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'pink lighten-1', 'red darken-1'],
-				overlay: false
+				overlay: false,
 			}
 		},
 		computed: {
@@ -247,16 +258,35 @@
 
 				nativeEvent.stopPropagation()
 			},
+			translateMonth(str){
+				let a = str.split(" ")
+				const dic = {
+					January: "Tháng Một",
+					February: "Tháng Hai",
+					March: "Tháng Ba",
+					April: "Thánng Bốn",
+					May: "Tháng Năm",
+					June: "Tháng Sáu",
+					July: "Tháng Bảy",
+					August: "Tháng Tám",
+					September: "Tháng Chín",
+					October: "Tháng Mười",
+					November: "Tháng Mười Một",
+					December: "Tháng Mười Hai"
+				}
+
+				let text = dic[a[0]] + " " + a[1]
+				return text
+			}
 		},
 		mounted() {
 			this.overlay = true
 			this.getEvents()
 			setTimeout(() => {
 				this.overlay = false
-			},1000)
+			}, 1000)
 
-			document.title = "Thời Khoá Biểu"
-			
+			document.title = 'Thời Khoá Biểu'
 		},
 	}
 </script>
