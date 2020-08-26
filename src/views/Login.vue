@@ -142,7 +142,7 @@
 							text: `Chào ${data.data.studentInfo.displayName} (${data.data.studentInfo.studentCode}) !`,
 						})
 
-						this.$router.push({ name: 'Dashboard' })
+						this.$router.replace({ name: 'Dashboard' })
 					}
 				} catch (err) {
 					this.disable = false

@@ -19,7 +19,7 @@ const routes = [
 	},
 	{
 		path: '/dashboard',
-		component: () => import(/* webpackChunkName: "login" */ '../views/Dashboard.vue'),
+		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
 		meta: {
 			requiresAuth: true
 		},
@@ -27,12 +27,17 @@ const routes = [
 			{
 				path: '/',
 				name: 'Dashboard',
-				component: () => import(/* webpackChunkName: "login" */ '../views/Dashboard/Schedule.vue')
+				component: () => import(/* webpackChunkName: "dashboard-chil" */ '../views/Dashboard/Schedule.vue')
 			},
 			{
 				path: '/about',
 				name: 'About',
-				component: () => import(/* webpackChunkName: "login" */ '../views/Dashboard/About.vue')
+				component: () => import(/* webpackChunkName: "about" */ '../views/Dashboard/About.vue')
+			},
+			{
+				path: '/ics',
+				name: 'Icalendar',
+				component: () => import(/* webpackChunkName: "icalendar" */ '../views/Dashboard/Icalendar.vue')
 			}
 		]
 	}
