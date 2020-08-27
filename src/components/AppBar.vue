@@ -76,7 +76,7 @@
 
 			<template v-slot:append>
 				<v-list-item-group mandatory>
-					<v-list-item link exact class="success" dark :to="{ name: 'AppInstall' }">
+					<v-list-item link class="success" dark @click.stop="installAppDialog = true">
 						<v-list-item-action>
 							<v-icon class="white--text">fas fa-mobile-alt</v-icon>
 						</v-list-item-action>
@@ -111,15 +111,21 @@
 				</p>
 			</template>
 		</v-navigation-drawer>
+
+		<InstallApp v-model="installAppDialog" />
 	</div>
 </template>
 
 <script>
 	import { mapState } from 'vuex'
 	import moment from 'moment'
+	import InstallApp from './InstallApp'
 
 	export default {
 		name: 'AppBar',
+		components: {
+			InstallApp,
+		},
 		computed: {
 			...mapState(['user']),
 			getYear() {
@@ -129,6 +135,7 @@
 		data() {
 			return {
 				drawer: null,
+				installAppDialog: false,
 			}
 		},
 		methods: {
@@ -136,6 +143,19 @@
 				this.$store.commit('user/LOGOUT')
 				this.$router.replace({ name: 'Login' })
 			},
+		},
+		created() {
+			window.addEventListener('DOMContentLoaded', () => {
+				let displayMode = 'browser tab'
+				if (navigator.standalone) {
+					displayMode = 'standalone-ios'
+				}
+				if (window.matchMedia('(display-mode: standalone)').matches) {
+					displayMode = 'standalone'
+				}
+				// Log launch display mode to analytics
+				console.log('DISPLAY_MODE_LAUNCH:', displayMode)
+			})
 		},
 	}
 </script>
