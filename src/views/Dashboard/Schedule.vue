@@ -284,7 +284,7 @@
 			this.getEvents()
 			setTimeout(() => {
 				this.overlay = false
-			}, 1000)
+			}, 500)
 
 			document.title = 'Thời Khoá Biểu'
 		},

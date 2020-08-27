@@ -5,6 +5,7 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 
 import ICS from 'vue-ics'
+import './registerServiceWorker'
 
 Vue.use(ICS, {
 	uidDomain: 'https://danghoangphuc.com',
