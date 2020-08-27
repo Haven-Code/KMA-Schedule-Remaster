@@ -18,6 +18,10 @@ const routes = [
 		component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
 	},
 	{
+		path: '/index.html',
+		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
+	},
+	{
 		path: '/dashboard',
 		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
 		meta: {
