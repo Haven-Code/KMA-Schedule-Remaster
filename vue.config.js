@@ -86,10 +86,9 @@ module.exports = {
 			"start_url": "./index.html",
 			"background_color": "#ffffff"
 		},
-		workboxPluginMode: 'InjectManifest',
+		workboxPluginMode: 'GenerateSW',
 		workboxOptions: {
-			swSrc: 'service-worker.js',
-			exclude: [/_redirects/],
+			exclude:[/\.map$/, /_redirects/],
 		}
 	}
 }
