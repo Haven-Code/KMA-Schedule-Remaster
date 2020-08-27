@@ -19,7 +19,8 @@ const routes = [
 	},
 	{
 		path: '/index.html',
-		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
+		// component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
+		redirect: { name: 'Dashboard' }
 	},
 	{
 		path: '/dashboard',

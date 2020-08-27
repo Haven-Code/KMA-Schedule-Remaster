@@ -145,17 +145,9 @@
 			},
 		},
 		mounted() {
-			window.addEventListener('DOMContentLoaded', () => {
-				let displayMode = 'browser tab'
-				if (navigator.standalone) {
-					displayMode = 'standalone-ios'
-				}
-				if (window.matchMedia('(display-mode: standalone)').matches) {
-					displayMode = 'standalone'
-				}
-				// Log launch display mode to analytics
-				console.log('DISPLAY_MODE_LAUNCH:', displayMode)
-			})
+			if (window.matchMedia('(display-mode: standalone)').matches) {
+				console.log("Installed")
+			}
 		},
 	}
 </script>
