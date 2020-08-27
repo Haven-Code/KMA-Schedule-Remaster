@@ -86,10 +86,10 @@ module.exports = {
 			"start_url": "./index.html",
 			"background_color": "#ffffff"
 		},
+		workboxPluginMode: 'InjectManifest',
 		workboxOptions: {
-			exclude: [
-				"/_redirects"
-			]
+			swSrc: 'service-worker.js',
+			exclude: [/_redirects/],
 		}
 	}
 }
