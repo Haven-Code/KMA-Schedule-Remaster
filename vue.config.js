@@ -88,7 +88,7 @@ module.exports = {
 		},
 		workboxPluginMode: 'GenerateSW',
 		workboxOptions: {
-			exclude:[/\.map$/, /_redirects/],
+			exclude:[/\.map$/, /_redirects/,/netlify.toml/],
 		}
 	}
 }
