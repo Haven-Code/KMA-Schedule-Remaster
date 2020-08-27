@@ -144,7 +144,7 @@
 				this.$router.replace({ name: 'Login' })
 			},
 		},
-		created() {
+		mounted() {
 			window.addEventListener('DOMContentLoaded', () => {
 				let displayMode = 'browser tab'
 				if (navigator.standalone) {

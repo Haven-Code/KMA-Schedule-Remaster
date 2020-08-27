@@ -19,7 +19,7 @@ const routes = [
 	},
 	{
 		path: '/index.html',
-		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard/Schedule.vue')
+		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
 	},
 	{
 		path: '/dashboard',
@@ -29,7 +29,7 @@ const routes = [
 		},
 		children: [
 			{
-				path: '/',
+				path: '',
 				name: 'Dashboard',
 				component: () => import(/* webpackChunkName: "dashboard-chil" */ '../views/Dashboard/Schedule.vue')
 			},
