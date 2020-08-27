@@ -40,6 +40,7 @@
 </template>
 
 <script>
+	import swal from 'sweetalert'
 	export default {
 		name: 'InstallApp',
 		props: {
@@ -69,6 +70,11 @@
 						console.log('User accepted the install prompt')
 					} else {
 						console.log('User dismissed the install prompt')
+						swal({
+							title: 'Oh :(',
+							icon: 'error',
+							text: 'Bạn Có Thể Thử Lại Sau !',
+						})
 					}
 				})
 			},
@@ -79,6 +85,8 @@
 				this.deferredPrompt = e
 			})
 			window.addEventListener('appinstalled', () => {
+				console.log('App install success !')
+				this.show = false
 				this.deferredPrompt = null
 			})
 		},
