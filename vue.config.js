@@ -83,6 +83,13 @@ module.exports = {
 					type: "image/png",
 				},
 			],
+			"start_url": "./index.html",
+			"background_color": "#ffffff"
 		},
+		workboxOptions: {
+			exclude: [
+				"/_redirects"
+			]
+		}
 	}
 }
