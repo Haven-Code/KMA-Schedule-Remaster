@@ -42,6 +42,15 @@
 
 					<v-spacer></v-spacer>
 
+					<v-tooltip bottom>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn outlined class="mr-4" color="grey darken-2" disabled v-bind="attrs" v-on="on">
+								Đồng Bộ Lại
+							</v-btn>
+						</template>
+						<span>Tải Lại TKB</span>
+					</v-tooltip>
+
 					<v-menu bottom right>
 						<template v-slot:activator="{ on, attrs }">
 							<v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
@@ -258,26 +267,26 @@
 
 				nativeEvent.stopPropagation()
 			},
-			translateMonth(str){
-				let a = str.split(" ")
+			translateMonth(str) {
+				let a = str.split(' ')
 				const dic = {
-					January: "Tháng Một",
-					February: "Tháng Hai",
-					March: "Tháng Ba",
-					April: "Thánng Bốn",
-					May: "Tháng Năm",
-					June: "Tháng Sáu",
-					July: "Tháng Bảy",
-					August: "Tháng Tám",
-					September: "Tháng Chín",
-					October: "Tháng Mười",
-					November: "Tháng Mười Một",
-					December: "Tháng Mười Hai"
+					January: 'Tháng Một',
+					February: 'Tháng Hai',
+					March: 'Tháng Ba',
+					April: 'Thánng Bốn',
+					May: 'Tháng Năm',
+					June: 'Tháng Sáu',
+					July: 'Tháng Bảy',
+					August: 'Tháng Tám',
+					September: 'Tháng Chín',
+					October: 'Tháng Mười',
+					November: 'Tháng Mười Một',
+					December: 'Tháng Mười Hai',
 				}
 
-				let text = dic[a[0]] + " " + a[1]
+				let text = dic[a[0]] + ' ' + a[1]
 				return text
-			}
+			},
 		},
 		mounted() {
 			this.overlay = true

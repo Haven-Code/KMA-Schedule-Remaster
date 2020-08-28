@@ -48,9 +48,21 @@
 						</v-list-item-content>
 					</v-list-item>
 
-					<v-list-item link exact :to="{ name: 'Icalendar' }">
+					<v-list-item link exact :to="{ name: 'Sync' }">
 						<v-list-item-action>
 							<v-icon>fas fa-sync</v-icon>
+						</v-list-item-action>
+
+						<v-list-item-content>
+							<v-list-item-title>
+								Đồng Bộ Hoá
+							</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+
+					<v-list-item link exact :to="{ name: 'Icalendar' }">
+						<v-list-item-action>
+							<v-icon>fas fa-tools</v-icon>
 						</v-list-item-action>
 
 						<v-list-item-content>
@@ -60,7 +72,7 @@
 						</v-list-item-content>
 					</v-list-item>
 
-					<v-list-item link exact :to="{ name: 'User' }">
+					<v-list-item link exact :to="{ name: 'Dashboard' }">
 						<v-list-item-action>
 							<v-icon>fas fa-user</v-icon>
 						</v-list-item-action>
@@ -146,7 +158,7 @@
 		},
 		mounted() {
 			if (window.matchMedia('(display-mode: standalone)').matches) {
-				console.log("Installed")
+				console.log('Installed')
 			}
 		},
 	}

@@ -1,7 +1,7 @@
 <!-- @format -->
 
 <template>
-	<div class="iCalendar amber lighten-3">
+	<div class="iCalendar amber lighten-4">
 		<v-row align="center" justify="center">
 			<v-col cols="12" md="10" sm="8">
 				<v-card>

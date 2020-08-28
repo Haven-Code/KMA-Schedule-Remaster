@@ -43,7 +43,12 @@ const routes = [
 				path: '/ics',
 				name: 'Icalendar',
 				component: () => import(/* webpackChunkName: "icalendar" */ '../views/Dashboard/Icalendar.vue')
-			}
+			},
+			{
+				path: '/sync',
+				name: 'Sync',
+				component: () => import(/* webpackChunkName: "Sync" */ '../views/Dashboard/Sync.vue')
+			},
 		]
 	}
 ]
