@@ -1,10 +1,10 @@
 <!-- @format -->
 
 <template>
-	<div class="iCalendar amber lighten-4">
+	<v-container fluid class="fill-height iCalendar amber lighten-4 text-center">
 		<v-row align="center" justify="center">
 			<v-col cols="12" md="10" sm="8">
-				<v-card>
+				<v-card min-height="65vh">
 					<v-card-title>Chuyển Đổi Sang File Icalendar (.ics)</v-card-title>
 
 					<div class="content text-center pb-5">
@@ -65,7 +65,7 @@
 				</v-card>
 			</v-col>
 		</v-row>
-	</div>
+	</v-container>
 </template>
 
 <script>
@@ -193,7 +193,7 @@
 			},
 			downloadFile() {
 				// console.log(this.$ics.calendar())
-				let filename = this.slug(this.user.userData.displayName) + "-" + this.user.userData.studentCode
+				let filename = this.slug(this.user.userData.displayName) + '-' + this.user.userData.studentCode
 				this.$ics.download(filename)
 			},
 		},

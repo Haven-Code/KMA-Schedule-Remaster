@@ -44,11 +44,11 @@
 
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on, attrs }">
-							<v-btn outlined class="mr-4" color="grey darken-2" disabled v-bind="attrs" v-on="on">
+							<v-btn outlined class="mr-4" color="grey darken-2" v-bind="attrs" v-on="on">
 								Đồng Bộ Lại
 							</v-btn>
 						</template>
-						<span>Tải Lại TKB</span>
+						<span>Comming Soon</span>
 					</v-tooltip>
 
 					<v-menu bottom right>

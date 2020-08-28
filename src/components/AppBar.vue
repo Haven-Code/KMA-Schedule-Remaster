@@ -1,7 +1,12 @@
 <!-- @format -->
 
 <template>
-	<div class="appBar">
+	<div
+		class="appBar"
+		v-touch="{
+			left: () => swipe('Left'),
+		}"
+	>
 		<v-app-bar app clipped-left color="amber" dark elevation="3">
 			<v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 			<span class="title ml-3 mr-5">
@@ -48,18 +53,6 @@
 						</v-list-item-content>
 					</v-list-item>
 
-					<v-list-item link exact :to="{ name: 'Sync' }">
-						<v-list-item-action>
-							<v-icon>fas fa-sync</v-icon>
-						</v-list-item-action>
-
-						<v-list-item-content>
-							<v-list-item-title>
-								Đồng Bộ Hoá
-							</v-list-item-title>
-						</v-list-item-content>
-					</v-list-item>
-
 					<v-list-item link exact :to="{ name: 'Icalendar' }">
 						<v-list-item-action>
 							<v-icon>fas fa-tools</v-icon>
@@ -72,7 +65,19 @@
 						</v-list-item-content>
 					</v-list-item>
 
-					<v-list-item link exact :to="{ name: 'Dashboard' }">
+					<v-list-item link exact :to="{ name: 'Sync' }">
+						<v-list-item-action>
+							<v-icon>fas fa-sync</v-icon>
+						</v-list-item-action>
+
+						<v-list-item-content>
+							<v-list-item-title>
+								Đồng Bộ Hoá
+							</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+
+					<v-list-item link exact :to="{ name: 'User' }">
 						<v-list-item-action>
 							<v-icon>fas fa-user</v-icon>
 						</v-list-item-action>
@@ -88,7 +93,7 @@
 
 			<template v-slot:append>
 				<v-list-item-group mandatory>
-					<v-list-item link class="success" dark @click.stop="installAppDialog = true">
+					<v-list-item link class="success" dark @click.stop="installAppDialog = true" v-if="!hideInstallBanner">
 						<v-list-item-action>
 							<v-icon class="white--text">fas fa-mobile-alt</v-icon>
 						</v-list-item-action>
@@ -148,6 +153,8 @@
 			return {
 				drawer: null,
 				installAppDialog: false,
+				hideInstallBanner: false,
+				swipeDirection: 'None',
 			}
 		},
 		methods: {
@@ -155,10 +162,15 @@
 				this.$store.commit('user/LOGOUT')
 				this.$router.replace({ name: 'Login' })
 			},
+			swipe(direction) {
+				this.swipeDirection = direction
+			},
 		},
 		mounted() {
-			if (window.matchMedia('(display-mode: standalone)').matches) {
-				console.log('Installed')
+			const isInStandaloneMode = () => 'standalone' in window.navigator && window.navigator.standalone
+
+			if (isInStandaloneMode()) {
+				this.hideInstallBanner = true
 			}
 		},
 	}

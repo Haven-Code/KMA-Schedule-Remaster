@@ -49,6 +49,11 @@ const routes = [
 				name: 'Sync',
 				component: () => import(/* webpackChunkName: "Sync" */ '../views/Dashboard/Sync.vue')
 			},
+			{
+				path: '/user',
+				name: 'User',
+				component: () => import(/* webpackChunkName: "User" */ '../views/Dashboard/User.vue')
+			}
 		]
 	}
 ]
