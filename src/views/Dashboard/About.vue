@@ -72,7 +72,7 @@
                     },
                     {
 						name: 'Tương Thích',
-						value: 'Bất kỳ HĐH sử dụng Chrome 86 trở lên. Riêng IOS chạy tốt nhất từ IOS 11.3 trở lên !',
+						value: 'Bất kỳ HĐH sử dụng Chrome 80 trở lên. Riêng IOS chạy tốt nhất từ IOS 11.3 trở lên !',
 					},
 				],
 			}
