@@ -6,7 +6,7 @@
 			<v-col cols="12" sm="10" md="8">
 				<center>
 					<div class="content">
-						<v-img src="../assets/LogoKMA.png" class="logo"></v-img>
+						<v-img src="../assets/logo.png" class="logo"></v-img>
 
 						<p class="text-h1 mt-2">
 							&lt;
@@ -24,11 +24,11 @@
 					<div class="abc" v-else>
 						<p class="title">Chào {{ user.userData.displayName }} ({{ user.userData.studentCode }}) !</p>
 
-						<v-btn :to="{ name: 'Dashboard' }" color="primary" class="mt-5" large >
+						<v-btn :to="{ name: 'Dashboard' }" color="primary" class="mt-5" large>
 							<v-icon left>fas fa-tachometer-alt</v-icon>
 							Truy Cập Bảng Điều Khiển !
 						</v-btn>
-						<br>
+						<br />
 						<v-btn text color="primary" class="mt-2">
 							Thoát
 						</v-btn>
@@ -51,6 +51,11 @@
 			},
 		},
 		methods: {},
+		created() {
+			if (this.user.isLogined) {
+				this.$router.replace({ name: 'Dashboard' })
+			}
+		},
 	}
 </script>
 

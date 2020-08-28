@@ -4,29 +4,41 @@
 	<v-container fluid class="fill-height syncForm amber lighten-4 text-center">
 		<v-row align="center" justify="center">
 			<v-col cols="12" sm="8" md="10">
-				<v-card min-height="56vh">
+				<v-card min-height="65vh">
 					<v-card-title>Đồng Bộ Hoá Với Google Lịch / Microsoft Lịch</v-card-title>
 
 					<v-row>
-						<v-col cols="6">
+						<v-col md="6" sm="12">
 							<v-btn v-if="!authorized" color="red" dark @click.stop="handleAuthClick">
-								Đăng Nhập Với Google
+								<v-icon class="mr-2">fab fa-google</v-icon> Đăng Nhập Với Google
 							</v-btn>
 							<v-btn v-if="authorized" color="red" dark @click.stop="handleSignoutClick" :loading="google.loadingBtn">
-								Ngắt Kết Nối Google
+								<v-icon class="mr-2">fas fa-times</v-icon> Ngắt Kết Nối Google
 							</v-btn>
 							<br />
 							<v-btn v-if="authorized" color="primary" class="mt-2" @click="importData" :loading="google.loadingBtn">
-								Nhập Dữ Liệu
+								<v-icon class="mr-2">fas fa-file-import</v-icon> Nhập Dữ Liệu
 							</v-btn>
 						</v-col>
 
-						<v-col cols="6">
-							ABC
+						<v-col md="6" sm="12">
+							<v-btn v-if="!ms.authorized" color="primary" dark @click.stop="msSignIn">
+								<v-icon class="mr-2">fab fa-microsoft</v-icon> Liên Kết Với Mirosoft
+							</v-btn>
+							<v-btn v-if="ms.authorized" color="primary" dark @click.stop="msSignOut" :loading="google.loadingBtn">
+								<v-icon class="mr-2">fas fa-times</v-icon> Ngắt Kết Nối Microsoft
+							</v-btn>
+
+							<p v-if="ms.authorized" class="mt-2">Chào {{ ms.account.name }} !</p>
+
+							<v-btn v-if="ms.authorized" dark color="amber darken-2" class="" @click="msImportData" :loading="google.loadingBtn">
+								<v-icon class="mr-2">fab fa-file-import</v-icon> Nhập Dữ Liệu
+							</v-btn>
 						</v-col>
 					</v-row>
 
-					<div class="console grey lighten-2 mt-5 ma-2 px-2 pt-1 white--text text-left text-body-2" v-html="console"></div>
+					<p class="text-subtitle-2 mt-3">Console:</p>
+					<div class="console grey lighten-2 mt-5 ma-2 px-2 pt-1 black--text text-left text-body-2" v-html="console"></div>
 				</v-card>
 			</v-col>
 		</v-row>
@@ -53,6 +65,11 @@
 				google: {
 					loadingBtn: false,
 				},
+				ms: {
+					authorized: false,
+					api: undefined,
+					account: null,
+				},
 				console: '<p>Chào Bạn !</p>',
 			}
 		},
@@ -60,8 +77,31 @@
 			...mapState(['user']),
 		},
 		created() {
+			//Loading Google Client
 			this.api = gapi
 			this.handleClientLoad()
+
+			//Loading Microsoft Library
+
+			const msalConfig = {
+				auth: {
+					clientId: process.env.VUE_APP_MS_CLIENT_ID,
+					redirectUri: process.env.VUE_APP_MS_REDIRECT_URL,
+				},
+				cache: {
+					cacheLocation: 'sessionStorage',
+					storeAuthStateInCookie: false,
+					forceRefresh: false,
+				},
+			}
+
+			const msalClient = new Msal.UserAgentApplication(msalConfig)
+			this.ms.api = msalClient
+
+			if (msalClient.getAccount() && !msalClient.isCallback(window.location.hash)) {
+				this.ms.account = msalClient.getAccount()
+				this.ms.authorized = true
+			}
 		},
 		methods: {
 			handleClientLoad() {
@@ -121,13 +161,13 @@
 				switch (lessons) {
 					case '1,2,3':
 						time = {
-							start: '7:00',
-							end: '9:25',
+							start: '07:00',
+							end: '09:25',
 						}
 						break
 					case '4,5,6':
 						time = {
-							start: '9:35',
+							start: '09:35',
 							end: '12:00',
 						}
 						break
@@ -171,27 +211,27 @@
 				this.google.loadingBtn = true
 
 				// Create Calendar
-				let stuYear = moment().format('YYYY') + ' - ' + (moment().format('YYYY') + 1)
+				let stuYear = moment().format('YYYY') + ' - ' + (parseInt(moment().format('YYYY')) + 1)
 				let ID = this.generateUniqueID()
 
 				this.api.client.calendar.calendars
 					.insert({
 						resource: {
 							summary: `KMA Schedule ${stuYear} ${ID}`,
-							description: `TKB Khoá Học ${stuYear} \nID: ${ID}`,
+							description: `TKB Khoá Học ${stuYear} \nID: ${ID} \nTạo Lúc: ${moment().format('DD/MM/YYYY')} `,
 							timeZone: 'Asia/Ho_Chi_Minh',
 						},
 					})
 					.then((res) => {
-						console.log(res.result.id)
-						this.console += `<p class="success--text">[GOOGLE] --> Tạo Lịch Mới Thành Công !</p>`
+						// console.log(res.result.id)
+						this.console += `<p class="success--text">[GOOGLE] --> Tạo Lịch Mới Thành Công ! Tên: KMA Schedule ${stuYear} ${ID}</p>`
 
 						const batch = this.api.client.newBatch()
 
 						this.console += `<p class="primary--text">[GOOGLE] --> Bắt Đầu Chuẩn Bị Event !</p>`
 
 						this.user.userSchedule.forEach((a, index) => {
-							console.log('Satrt Import Insert Event: ', index)
+							// console.log('Satrt Import Insert Event: ', index)
 
 							let start =
 								moment(a.day, 'DD/MM/YYYY').format('YYYY-MM-DD') + 'T' + this.convertLessonsToTime(a.lesson).start + ':00.000+07:00'
@@ -219,7 +259,7 @@
 								})
 							)
 
-							console.log('Finish Insert Event: ', index)
+							// console.log('Finish Insert Event: ', index)
 						})
 
 						this.console += `<p class="success--text">[GOOGLE] --> Tạo Event Thành Công !</p>`
@@ -243,6 +283,105 @@
 
 				this.google.loadingBtn = false
 			},
+
+			// Microsoft Auth
+			async msSignIn() {
+				const loginRequest = {
+					scopes: ['openid', 'profile', 'user.read', 'calendars.readwrite'],
+				}
+
+				try {
+					await this.ms.api.loginPopup(loginRequest)
+
+					console.log('id_token acquired at: ' + new Date().toString())
+
+					if (this.ms.api.getAccount()) {
+						this.ms.account = this.ms.api.getAccount()
+						this.ms.authorized = true
+					}
+				} catch (error) {
+					console.log(error)
+				}
+			},
+
+			msSignOut() {
+				this.ms.api.logout()
+				this.ms.authorized = false
+			},
+
+			async msImportData() {
+				const options = new MicrosoftGraph.MSALAuthenticationProviderOptions(['user.read', 'calendars.readwrite'])
+				const authProvider = new MicrosoftGraph.ImplicitMSALAuthenticationProvider(this.ms.api, options)
+				const graphClient = MicrosoftGraph.Client.initWithMiddleware({ authProvider })
+
+				let stuYear = moment().format('YYYY') + ' - ' + (parseInt(moment().format('YYYY')) + 1)
+				let ID = this.generateUniqueID()
+
+				this.clearConsole()
+
+				try {
+					let calendar = await graphClient.api('/me/calendars').post({
+						Name: `KMA Schedule ${stuYear} ${ID}`,
+					})
+
+					this.console += `<p class="success--text">[MICROSOFT] --> Tạo Lịch Thành Công ! Tên: KMA Schedule ${stuYear} ${ID} </p>`
+
+					this.user.userSchedule.forEach(async (a, index) => {
+						setTimeout(async () => {
+							let start = moment(a.day, 'DD/MM/YYYY').format('YYYY-MM-DD') + 'T' + this.convertLessonsToTime(a.lesson).start + ':00'
+
+							let end = moment(a.day, 'DD/MM/YYYY').format('YYYY-MM-DD') + 'T' + this.convertLessonsToTime(a.lesson).end + ':00'
+
+							let event = {
+								subject: a.subjectName,
+								body: {
+									contentType: 'HTML',
+									content: `Tiết: ${a.lesson} <br>Lớp: ${a.className} <br>Giáo Viên: ${a.teacher}`,
+								},
+								start: {
+									dateTime: start,
+									timeZone: 'Asia/Bangkok',
+								},
+								end: {
+									dateTime: end,
+									timeZone: 'Asia/Bangkok',
+								},
+								location: {
+									displayName: a.room,
+									address: {
+										city: 'Hà Nội',
+										countryOrRegion: 'Việt Nam',
+										postalCode: '100000',
+										state: 'Thanh Xuân',
+										street: '141 Chiến Thắng',
+									},
+								},
+							}
+
+							let eventCall = await graphClient.api(`/me/calendars/${calendar.id}/events`).post(event)
+
+							this.console += `<p class="success--text">[MICROSOFT] --> Nhập Event ${index + 1} ${a.subjectName} Thành Công !</p>`
+						
+							if (index +1 == this.user.userSchedule.length){
+								this.console += `<p class="success--text">[MICROSOFT] --> <strong>Đồng Bộ Hoá Xong</strong></p>`
+							}						
+						}, 500 * index)
+					})
+				} catch (err) {
+					this.console += `<p class="danger--text">[MICROSOFT] --> Tạo Lịch Thất Bại Hoặc Nhập Thất Bại</p>`
+				}	
+			},
+		},
+		mounted() {
+			let firstTime = true
+			let container = document.getElementsByClassName("console")
+
+			if (firstTime) {
+				container.scrollTop = container.scrollHeight
+				firstTime = false
+			} else if (container.scrollTop + container.clientHeight === container.scrollHeight) {
+				container.scrollTop = container.scrollHeight
+			}
 		},
 	}
 </script>
