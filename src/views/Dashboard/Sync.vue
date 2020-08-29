@@ -25,14 +25,14 @@
 							<v-btn v-if="!ms.authorized" color="primary" dark @click.stop="msSignIn">
 								<v-icon class="mr-2">fab fa-microsoft</v-icon> Liên Kết Với Mirosoft
 							</v-btn>
-							<v-btn v-if="ms.authorized" color="primary" dark @click.stop="msSignOut" :loading="google.loadingBtn">
+							<v-btn v-if="ms.authorized" color="primary" dark @click.stop="msSignOut" :loading="ms.loadingBtn">
 								<v-icon class="mr-2">fas fa-times</v-icon> Ngắt Kết Nối Microsoft
 							</v-btn>
 
 							<p v-if="ms.authorized" class="mt-2">Chào {{ ms.account.name }} !</p>
 
-							<v-btn v-if="ms.authorized" dark color="amber darken-2" class="" @click="msImportData" :loading="google.loadingBtn">
-								<v-icon class="mr-2">fab fa-file-import</v-icon> Nhập Dữ Liệu
+							<v-btn v-if="ms.authorized" dark color="amber darken-2" class="" @click="msImportData" :loading="ms.loadingBtn">
+								<v-icon class="mr-2">fas fa-file-import</v-icon> Nhập Dữ Liệu
 							</v-btn>
 						</v-col>
 					</v-row>
@@ -69,6 +69,7 @@
 					authorized: false,
 					api: undefined,
 					account: null,
+					loadingBtn: false
 				},
 				console: '<p>Chào Bạn !</p>',
 			}
@@ -318,6 +319,7 @@
 				let ID = this.generateUniqueID()
 
 				this.clearConsole()
+				this.ms.loadingBtn = true
 
 				try {
 					let calendar = await graphClient.api('/me/calendars').post({
@@ -364,11 +366,14 @@
 						
 							if (index +1 == this.user.userSchedule.length){
 								this.console += `<p class="success--text">[MICROSOFT] --> <strong>Đồng Bộ Hoá Xong</strong></p>`
+								this.ms.loadingBtn = false
 							}						
 						}, 500 * index)
 					})
+
 				} catch (err) {
 					this.console += `<p class="danger--text">[MICROSOFT] --> Tạo Lịch Thất Bại Hoặc Nhập Thất Bại</p>`
+					this.ms.loadingBtn = false
 				}	
 			},
 		},
