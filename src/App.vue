@@ -9,10 +9,14 @@
 </template>
 
 <script>
-
 	export default {
 		name: 'App',
-		components: {
-		},
+		components: {},
 	}
 </script>
+
+<style>
+	body {
+		overscroll-behavior-y: contain;
+	}
+</style>
