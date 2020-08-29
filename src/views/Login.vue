@@ -118,6 +118,7 @@
 					if (data.code === 'ERROR') {
 						if (data.message.name == 'TransformError') {
 							this.disable = false
+							this.submitBtnLoading = false
 							return swal({
 								title: 'Error !',
 								icon: 'error',
@@ -125,12 +126,15 @@
 							})
 						} else {
 							this.disable = false
+							this.submitBtnLoading = false
 							return swal({
 								title: 'Response Error !',
 								icon: 'error',
 								text: 'Server Error ! Please Wait !',
 							})
 						}
+
+						
 					} else if (data.code === 'SUCCESS') {
 						// console.log(data.data)
 
