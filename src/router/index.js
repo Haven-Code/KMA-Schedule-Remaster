@@ -18,6 +18,16 @@ const routes = [
 		component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
 	},
 	{
+		path: '/termofservice',
+		name: 'ToS',
+		component: () => import(/* webpackChunkName: "tos" */ '../views/ToS.vue')
+	},
+	{
+		path: '/privacypolicy',
+		name: 'PP',
+		component: () => import(/* webpackChunkName: "pp" */ '../views/PrivacyPolicy.vue')
+	},
+	{
 		path: '/index.html',
 		// component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
 		redirect: { name: 'Dashboard' }

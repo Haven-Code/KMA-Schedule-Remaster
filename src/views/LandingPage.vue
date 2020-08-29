@@ -36,6 +36,15 @@
 				</center>
 			</v-col>
 		</v-row>
+
+		<v-footer absolute class="font-weight-medium">
+			<v-col class="text-center" cols="12">
+				Copyright &copy; {{ new Date().getFullYear() }} —
+				<strong><a href="https://havencode.net" target="_blank">Haven Code</a></strong> - Powered By <a href="https://danghoangphuc.com" target="_blank">Phuc Dang</a>
+				<br>
+				<router-link :to="{name: 'ToS'}">Term of Service</router-link> | <router-link :to="{name: 'PP'}">Privacy Policy</router-link>
+			</v-col>
+		</v-footer>
 	</v-container>
 </template>
 
@@ -61,7 +70,7 @@
 
 <style lang="scss" scoped>
 	.logo {
-		width: 22%;
+		width: 20%;
 		height: auto;
 	}
 

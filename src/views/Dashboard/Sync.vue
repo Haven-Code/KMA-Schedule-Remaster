@@ -268,11 +268,11 @@
 
 						batch
 							.then(() => {
-								this.console += `<p class="success--text">[GOOGLE] --> Đồng Bộ Thành Công ! </p>`
+								this.console += `<p class="success--text">[GOOGLE] --> <strong>Đồng Bộ Thành Công ! </strong></p>`
 								console.log('all jobs done!!!')
 							})
 							.catch((err) => {
-								this.console += `<p class="danger--text">[GOOGLE] --> Đồng Bộ Thất Bại ! </p> <p> ${err} </p>`
+								this.console += `<p class="danger--text">[GOOGLE] --> <strong>ĐĐồng Bộ Thất Bại ! </strong></p> <p> ${err} </p>`
 								throw new Error(err)
 							})
 					})
