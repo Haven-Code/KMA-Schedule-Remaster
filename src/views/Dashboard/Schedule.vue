@@ -190,20 +190,41 @@
 			getEventColor(event) {
 				return event.color
 			},
+
+			convertDayTime(day, lesson) {
+				let lessonTime = this.convertLessonsToTime(lesson)
+				let time = {
+					start: '',
+					end: '',
+				}
+
+				if (lessonTime.start == '' || lessonTime.end == '') {
+					time = {
+						start: moment(day, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+						end: moment(day, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+					}
+				} else {
+					time = {
+						start: moment((day + ' ' + lessonTime.start).trim(), 'DD/MM/YYYY H:mm').format('YYYY-MM-DD HH:mm'),
+						end: moment((day + ' ' + lessonTime.end).trim(), 'DD/MM/YYYY H:mm').format('YYYY-MM-DD HH:mm'),
+					}
+				}
+
+				return time
+			},
+
 			getEvents() {
 				const events = []
 
 				this.user.userSchedule.forEach((e) => {
-					let lessionTime = this.convertLessonsToTime(e.lesson)
-					let startTime = moment(e.day, 'DD/MM/YYYY').format('YYYY-MM-DD') + ' ' + lessionTime.start
-					let endTime = moment(e.day, 'DD/MM/YYYY').format('YYYY-MM-DD') + ' ' + lessionTime.end
 					let color = Math.floor(Math.random() * this.colors.length)
 					let detail = `Môn: <strong>${e.subjectName} (${e.subjectCode})</strong> <br> Lớp: <strong>${e.className}</strong> <br> Tiết: <strong>${e.lesson}</strong> <br> Phòng Học: <strong>${e.room}</strong> <br> Giáo Viên: <strong>${e.teacher}</strong>`
+					let time = this.convertDayTime(e.day, e.lesson)
 
 					events.push({
 						name: e.subjectName,
-						start: startTime,
-						end: endTime,
+						start: time.start,
+						end: time.end,
 						color: this.colors[color],
 						details: detail,
 					})
@@ -246,6 +267,12 @@
 						time = {
 							start: '18:00',
 							end: '21:15',
+						}
+						break
+					case '7,8,9,10':
+						time = {
+							start: '12:30',
+							end: '15:50'
 						}
 						break
 				}
