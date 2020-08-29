@@ -16,8 +16,9 @@
 								<v-icon class="mr-2">fas fa-times</v-icon> Ngắt Kết Nối Google
 							</v-btn>
 							<br />
+
 							<v-btn v-if="authorized" color="primary" class="mt-2" @click="importData" :loading="google.loadingBtn">
-								<v-icon class="mr-2">fas fa-file-import</v-icon> Nhập Dữ Liệu
+								<i class="fas fa-file-import fa-lg mr-2"></i> Nhập Dữ Liệu
 							</v-btn>
 						</v-col>
 
