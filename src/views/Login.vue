@@ -4,7 +4,7 @@
 	<v-container class="fill-height amber loginForm" fluid>
 		<v-row align="center" justify="center">
 			<v-col cols="12" sm="10" md="8">
-				<v-card class="elevation-12" height="50vh">
+				<v-card class="elevation-12" height="55vh">
 					<v-toolbar color="primary" dark flat>
 						<v-toolbar-title>
 							<span class="title ml-3 mr-5">

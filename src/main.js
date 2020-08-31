@@ -4,13 +4,13 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 
-import ICS from 'vue-ics'
 import './registerServiceWorker'
 
-Vue.use(ICS, {
-	uidDomain: 'https://danghoangphuc.com',
-	prodId: 'KMAScheduleByDHP'
-})
+import VCalendar from 'v-calendar';
+
+Vue.use(VCalendar, {
+	componentPrefix: 'vc',
+});
 
 Vue.config.productionTip = false
 

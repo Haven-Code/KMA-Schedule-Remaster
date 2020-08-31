@@ -3,12 +3,12 @@
 <template>
 	<v-container fluid class="fill-height iCalendar amber lighten-4 text-center">
 		<v-row align="center" justify="center">
-			<v-col cols="12" md="10" sm="8">
+			<v-col cols="12" md="9" sm="7">
 				<v-card min-height="65vh">
 					<v-card-title>Chuyển Đổi Sang File Icalendar (.ics)</v-card-title>
 
 					<div class="content text-center pb-5">
-						<v-btn x-large color="primary" @click.prevent="convertICS()" :loading="btnLoading">
+						<v-btn large color="primary" @click.prevent="convertICS()" :loading="btnLoading">
 							<v-icon class="mr-2">fas fa-file-download</v-icon>
 							Chuyển Đổi & Tải Xuống
 						</v-btn>
@@ -56,7 +56,7 @@
 								</v-row>
 							</v-container>
 
-							<v-btn large color="primary" class="mt-1" v-if="step.downloadBtn" @click.prevent="downloadFile">
+							<v-btn large color="primary" class="mt-1 downloadBtn" v-if="step.downloadBtn" @click.prevent="downloadFile">
 								<v-icon class="mr-2">fas fa-save</v-icon>
 								Tải Xuống
 							</v-btn>
@@ -69,8 +69,10 @@
 </template>
 
 <script>
+	/* eslint-disable */
 	import { mapState } from 'vuex'
 	import moment from 'moment'
+	import { createEvents } from 'ics'
 
 	export default {
 		name: 'Icalendar',
@@ -101,6 +103,8 @@
 					downloadBtn: false,
 				},
 				btnLoading: false,
+				events: [],
+				fileValue: null,
 			}
 		},
 		methods: {
@@ -113,14 +117,14 @@
 				switch (lessons) {
 					case '1,2,3':
 						time = {
-							start: '7:00',
+							start: '7:01',
 							end: '9:25',
 						}
 						break
 					case '4,5,6':
 						time = {
 							start: '9:35',
-							end: '12:00',
+							end: '11:59',
 						}
 						break
 					case '7,8,9':
@@ -137,52 +141,58 @@
 						break
 					case '13,14,15,16':
 						time = {
-							start: '18:00',
+							start: '18:01',
 							end: '21:15',
 						}
 						break
+					case '7,8,9,10':
+						time = {
+							start: '12:30',
+							end: '15:50',
+						}
+						break
+					default:
+						time = {
+							start: '',
+							end: '',
+						}
 				}
 				return time
-			},
-			slug(alias) {
-				var str = alias
-				str = str.toLowerCase()
-				str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a')
-				str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e')
-				str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i')
-				str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o')
-				str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u')
-				str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y')
-				str = str.replace(/đ/g, 'd')
-				str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, ' ')
-				str = str.replace(/ + /g, ' ')
-				str = str.trim()
-				return str
 			},
 			convertICS() {
 				this.btnLoading = true
 				this.step.show = true
 				this.step.step1.message = this.text.ok
-
-				this.$ics.removeAllEvents()
-
 				this.step.step2.show = true
 				this.step.step2.message = this.text.loading
 
-				try {
-					this.user.userSchedule.forEach((ch) => {
-						let title = ch.subjectName
-						let des = `Tiết ${ch.lesson} \n Lớp: ${ch.className} \n Giáo Viên: ${ch.teacher}`
-						let location = ch.room
-						let lessionTime = this.convertLessonsToTime(ch.lesson)
-						let startTime = moment(ch.day, 'DD/MM/YYYY').format('YYYY-MM-DD') + ' ' + lessionTime.start
-						let endTime = moment(ch.day, 'DD/MM/YYYY').format('YYYY-MM-DD') + ' ' + lessionTime.end
+				this.user.userSchedule.forEach((ch, index) => {
+					let title = ch.subjectName
+					let des = `Tiết ${ch.lesson} \n Lớp: ${ch.className} \n Giáo Viên: ${ch.teacher}`
+					let location = ch.room
+					let lessonTime = this.convertLessonsToTime(ch.lesson)
+					let tmStart = moment(lessonTime.start, 'hh:mm')
+					let tmEnd = moment(lessonTime.end, 'hh:mm')
+					let date = moment(ch.day, 'DD/MM/YYYY')
 
-						this.$ics.addEvent('vi-vn', title, des, location, startTime, endTime)
+					this.events.push({
+						productId: 'KMASchedulePoweredByDHP',
+						uid: index+1 + '@kma.dhpgo.com',
+						title: title,
+						description: des,
+						location: location,
+						start: [date.format('YYYY'), date.format('MM'), date.format('DD'), tmStart.format('hh'), tmStart.format('mm')],
+						end: [date.format('YYYY'), date.format('MM'), date.format('DD'), tmEnd.format('hh'), tmEnd.format('mm')],
 					})
-				} catch (e) {
-					console.log('ERROR: ', e)
+				})
+
+				const { error, value } = createEvents(this.events)
+
+				if (error) {
+					console.log('ERROR: ', error)
 					this.step.step2.message = this.text.fail
+				} else {
+					this.fileValue = value
 				}
 
 				this.step.step2.message = this.text.ok
@@ -193,8 +203,16 @@
 			},
 			downloadFile() {
 				// console.log(this.$ics.calendar())
-				let filename = this.slug(this.user.userData.displayName) + '-' + this.user.userData.studentCode
-				this.$ics.download(filename)
+				var element = document.createElement('a')
+				element.setAttribute('href', 'data:text/calendar;charset=utf-8,' + encodeURIComponent(this.fileValue))
+				element.setAttribute('download', this.user.userData.displayName + '-' + this.user.userData.studentCode)
+
+				element.style.display = 'none'
+				document.body.appendChild(element)
+
+				element.click()
+
+				document.body.removeChild(element)
 			},
 		},
 	}
