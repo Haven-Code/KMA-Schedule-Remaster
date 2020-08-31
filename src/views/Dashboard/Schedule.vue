@@ -2,7 +2,7 @@
 
 <template>
 	<v-row class="fill-height scheduleView">
-		<v-col>
+		<v-col class="hidden-sm-and-down">
 			<v-overlay absolute :value="overlay" opacity="0.8">
 				<Spinner />
 			</v-overlay>
@@ -131,6 +131,36 @@
 				</v-menu>
 			</v-sheet>
 		</v-col>
+
+		<v-col class="hidden-md-and-up mx-2 amber lighten-4 mobileView">
+			<vc-calendar
+				is-expanded
+				:attributes="calAttr"
+				transition="slide-h"
+				color="yellow"
+				:first-day-of-week="mWeekStart"
+				@dayclick="dayClicked"
+				locale="vi"
+			></vc-calendar>
+
+			<v-card class="mt-2 eventsList black--text" elevation="0">
+				<p v-if="!checkHasEvent" class="text-center mt-5">Bạn không có môn học vào hôm này !</p>
+
+				<v-list-item v-else three-line v-for="(event, index) in mData" :key="index" elevation="1" flat>
+					<v-list-item-content>
+						<v-list-item-title>{{ event.subjectName }}</v-list-item-title>
+
+						<v-list-item-subtitle>
+							Tiết: {{ event.lesson }} | {{ convertLessonsToTime(event.lesson).start }} -> {{ convertLessonsToTime(event.lesson).end }}
+						</v-list-item-subtitle>
+
+						<v-list-item-subtitle>Phòng: {{ event.room }}</v-list-item-subtitle>
+
+						<v-list-item-subtitle>Giáo Viên: {{ event.teacher }}</v-list-item-subtitle>
+					</v-list-item-content>
+				</v-list-item>
+			</v-card>
+		</v-col>
 	</v-row>
 </template>
 
@@ -168,10 +198,30 @@
 				},
 				colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'pink lighten-1', 'red darken-1'],
 				overlay: false,
+				mColors: ['red', 'green', 'teal', 'blue', 'indigo', 'purple', 'pink'],
+				calAttr: [
+					{
+						key: 'today',
+						highlight: {
+							color: 'yellow',
+							fillMode: 'solid',
+						},
+						dates: new Date(),
+					},
+				],
+				mWeekStart: 2,
+				mData: [],
 			}
 		},
 		computed: {
 			...mapState(['user']),
+			checkHasEvent() {
+				if (this.mData.length <= 0) {
+					return false
+				} else {
+					return true
+				}
+			},
 		},
 		methods: {
 			viewDay({ date }) {
@@ -190,7 +240,6 @@
 			getEventColor(event) {
 				return event.color
 			},
-
 			convertDayTime(day, lesson) {
 				let lessonTime = this.convertLessonsToTime(lesson)
 				let time = {
@@ -212,11 +261,10 @@
 
 				return time
 			},
-
 			getEvents() {
 				const events = []
 
-				this.user.userSchedule.forEach((e) => {
+				this.user.userSchedule.forEach((e, index) => {
 					let color = Math.floor(Math.random() * this.colors.length)
 					let detail = `Môn: <strong>${e.subjectName} (${e.subjectCode})</strong> <br> Lớp: <strong>${e.className}</strong> <br> Tiết: <strong>${e.lesson}</strong> <br> Phòng Học: <strong>${e.room}</strong> <br> Giáo Viên: <strong>${e.teacher}</strong>`
 					let time = this.convertDayTime(e.day, e.lesson)
@@ -227,6 +275,14 @@
 						end: time.end,
 						color: this.colors[color],
 						details: detail,
+					})
+
+					this.calAttr.push({
+						key: index + 1,
+						dot: {
+							color: this.mColors[Math.floor(Math.random() * this.mColors.length)],
+						},
+						dates: moment(e.day, 'DD/MM/YYYY').toDate(),
 					})
 				})
 
@@ -272,7 +328,7 @@
 					case '7,8,9,10':
 						time = {
 							start: '12:30',
-							end: '15:50'
+							end: '15:50',
 						}
 						break
 				}
@@ -314,6 +370,24 @@
 				let text = dic[a[0]] + ' ' + a[1]
 				return text
 			},
+			dayClicked(e) {
+				let day = moment(e.date).format('DD/MM/YYYY')
+				this.mData = []
+				this.user.userSchedule.forEach((a, index) => {
+					if (a.day == day) {
+						this.mData.push(a)
+					}
+				})
+			},
+			getToday() {
+				let day = moment().format('DD/MM/YYYY')
+
+				this.user.userSchedule.forEach((a, index) => {
+					if (a.day == day) {
+						this.mData.push(a)
+					}
+				})
+			},
 		},
 		mounted() {
 			this.overlay = true
@@ -324,11 +398,29 @@
 
 			document.title = 'Thời Khoá Biểu'
 		},
+		created() {
+			this.getToday()
+		},
 	}
 </script>
 
 <style>
-	.scheduleView {
+	html,
+	body {
 		overflow: hidden;
+	}
+
+	.eventsList {
+		overflow: auto;
+	}
+</style>
+
+<style lang="scss" scoped>
+	.mobileView {
+		height: 92vh;
+	}
+
+	.eventsList {
+		height: 50%;
 	}
 </style>

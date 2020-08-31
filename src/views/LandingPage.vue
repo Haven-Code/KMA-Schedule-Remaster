@@ -2,7 +2,7 @@
 
 <template>
 	<v-container class="bg grey lighten-4 d-flex" fluid tag="div">
-		<v-row justify="center" align="center" >
+		<v-row justify="center" align="center">
 			<v-col cols="12" sm="10" md="8">
 				<center>
 					<div class="content">
@@ -34,7 +34,7 @@
 						</v-btn>
 					</div>
 
-					<v-footer absolute class="hidden-sm-and-down text-center font-weight-medium">
+					<!-- <v-footer absolute class="hidden-sm-and-down text-center font-weight-medium">
 						<v-col class="text-center" cols="12">
 							Copyright &copy; {{ new Date().getFullYear() }} —
 							<strong><a href="https://havencode.net" target="_blank">Haven Code</a></strong>
@@ -45,9 +45,13 @@
 							|
 							<router-link :to="{ name: 'PP' }">Privacy Policy</router-link>
 						</v-col>
-					</v-footer>
+					</v-footer> -->
 				</center>
 			</v-col>
+		</v-row>
+
+		<v-row>
+			ABC
 		</v-row>
 	</v-container>
 </template>
