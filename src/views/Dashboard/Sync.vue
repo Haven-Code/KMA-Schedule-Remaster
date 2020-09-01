@@ -5,7 +5,7 @@
 		<v-row align="center" justify="center">
 			<v-col cols="12" sm="8" md="10">
 				<v-card min-height="65vh">
-					<v-card-title>Sync With Google Calendar !</v-card-title>
+					<v-card-title>Đồng bộ hoá với Google Lịch / Microsoft Lịch !</v-card-title>
 
 					<v-row>
 						<v-col md="6" sm="12">
@@ -72,7 +72,7 @@
 					account: null,
 					loadingBtn: false
 				},
-				console: '<p>Hello !</p>',
+				console: '<p>Chào bạn !</p>',
 			}
 		},
 		computed: {
