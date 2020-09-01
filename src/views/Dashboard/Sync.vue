@@ -10,19 +10,19 @@
 					<v-row>
 						<v-col md="6" sm="12">
 							<v-btn v-if="!authorized" color="red" dark @click.stop="handleAuthClick">
-								<v-icon class="mr-2">fab fa-google</v-icon> Connect With Google
+								<v-icon class="mr-2">fab fa-google</v-icon> Kết Nối Với Google
 							</v-btn>
 							<v-btn v-if="authorized" color="red" dark @click.stop="handleSignoutClick" :loading="google.loadingBtn">
-								<v-icon class="mr-2">fas fa-times</v-icon> Disconnect With Google
+								<v-icon class="mr-2">fas fa-times</v-icon> Ngắt Kết Nối Với Google
 							</v-btn>
 							<br />
 
 							<v-btn v-if="authorized" color="primary" class="mt-2" @click="importData" :loading="google.loadingBtn">
-								<i class="fas fa-file-import fa-lg mr-2"></i> Import Data
+								<i class="fas fa-file-import fa-lg mr-2"></i> Nhập Thời Khoá Biểu
 							</v-btn>
 						</v-col>
 
-						<!-- <v-col md="6" sm="12">
+						<v-col md="6" sm="12">
 							<v-btn v-if="!ms.authorized" color="primary" dark @click.stop="msSignIn">
 								<v-icon class="mr-2">fab fa-microsoft</v-icon> Liên Kết Với Mirosoft
 							</v-btn>
@@ -33,9 +33,9 @@
 							<p v-if="ms.authorized" class="mt-2">Chào {{ ms.account.name }} !</p>
 
 							<v-btn v-if="ms.authorized" dark color="amber darken-2" class="" @click="msImportData" :loading="ms.loadingBtn">
-								<v-icon class="mr-2">fas fa-file-import</v-icon> Nhập Dữ Liệu
+								<v-icon class="mr-2">fas fa-file-import</v-icon> Nhập Thời Khoá Biểu
 							</v-btn>
-						</v-col> -->
+						</v-col>
 					</v-row>
 
 					<p class="text-subtitle-2 mt-3">Console:</p>
@@ -226,11 +226,11 @@
 					})
 					.then((res) => {
 						// console.log(res.result.id)
-						this.console += `<p class="success--text">[GOOGLE] --> Create New Calendar Success ! Name: KMA Schedule ${stuYear} ${ID}</p>`
+						this.console += `<p class="success--text">[GOOGLE] --> Tạo Lịch Mới Thành Công ! Tên: KMA Schedule ${stuYear} ${ID}</p>`
 
 						const batch = this.api.client.newBatch()
 
-						this.console += `<p class="primary--text">[GOOGLE] --> Prepare Event !</p>`
+						this.console += `<p class="primary--text">[GOOGLE] --> Chuẩn bị lịch học !</p>`
 
 						this.user.userSchedule.forEach((a, index) => {
 							// console.log('Satrt Import Insert Event: ', index)
@@ -264,17 +264,17 @@
 							// console.log('Finish Insert Event: ', index)
 						})
 
-						this.console += `<p class="success--text">[GOOGLE] --> Create Event Done !</p>`
+						this.console += `<p class="success--text">[GOOGLE] --> Chuẩn bị xong !</p>`
 
-						this.console += `<p class="primary--text">[GOOGLE] --> Start Request !</p>`
+						this.console += `<p class="primary--text">[GOOGLE] --> Bắt đầu gửi !</p>`
 
 						batch
 							.then(() => {
-								this.console += `<p class="success--text">[GOOGLE] --> <strong>Sync Success ! </strong></p>`
+								this.console += `<p class="success--text">[GOOGLE] --> <strong>Đồng bộ thành công ! </strong></p>`
 								console.log('all jobs done!!!')
 							})
 							.catch((err) => {
-								this.console += `<p class="danger--text">[GOOGLE] --> <strong>Sync Fail ! </strong></p> <p> ${err} </p>`
+								this.console += `<p class="danger--text">[GOOGLE] --> <strong>Đồng bộ thất bại ! </strong></p> <p> ${err} </p>`
 								throw new Error(err)
 							})
 					})
