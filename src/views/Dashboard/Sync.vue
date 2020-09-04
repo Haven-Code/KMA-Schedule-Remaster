@@ -413,6 +413,7 @@
 	.signInWithGoogle {
 		width: 50%;
 		height: auto;
+		cursor: pointer;
 	}
 </style>
 
