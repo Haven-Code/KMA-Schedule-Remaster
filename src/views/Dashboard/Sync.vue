@@ -9,31 +9,39 @@
 
 					<v-row>
 						<v-col md="6" sm="12">
-							<v-btn v-if="!authorized" color="red" dark @click.stop="handleAuthClick">
+							<!-- <v-btn v-if="!authorized" color="red" dark @click.stop="handleAuthClick">
 								<v-icon class="mr-2">fab fa-google</v-icon> Kết Nối Với Google
-							</v-btn>
+							</v-btn> -->
+
+							<center><v-img v-if="!authorized" @click.stop="handleAuthClick" src="../../assets/btn_google_signin_dark_normal_web@2x.png" class="signInWithGoogle"></v-img></center>
+
 							<v-btn v-if="authorized" color="red" dark @click.stop="handleSignoutClick" :loading="google.loadingBtn">
-								<v-icon class="mr-2">fas fa-times</v-icon> Ngắt Kết Nối Với Google
+								<v-icon class="mr-2">fas fa-times</v-icon>
+								Ngắt Kết Nối Với Google
 							</v-btn>
 							<br />
 
 							<v-btn v-if="authorized" color="primary" class="mt-2" @click="importData" :loading="google.loadingBtn">
-								<i class="fas fa-file-import fa-lg mr-2"></i> Nhập Thời Khoá Biểu
+								<i class="fas fa-file-import fa-lg mr-2"></i>
+								Nhập Thời Khoá Biểu
 							</v-btn>
 						</v-col>
 
 						<v-col md="6" sm="12">
 							<v-btn v-if="!ms.authorized" color="primary" dark @click.stop="msSignIn">
-								<v-icon class="mr-2">fab fa-microsoft</v-icon> Liên Kết Với Mirosoft
+								<v-icon class="mr-2">fab fa-microsoft</v-icon>
+								Liên Kết Với Mirosoft
 							</v-btn>
 							<v-btn v-if="ms.authorized" color="primary" dark @click.stop="msSignOut" :loading="ms.loadingBtn">
-								<v-icon class="mr-2">fas fa-times</v-icon> Ngắt Kết Nối Microsoft
+								<v-icon class="mr-2">fas fa-times</v-icon>
+								Ngắt Kết Nối Microsoft
 							</v-btn>
 
 							<p v-if="ms.authorized" class="mt-2">Chào {{ ms.account.name }} !</p>
 
 							<v-btn v-if="ms.authorized" dark color="amber darken-2" class="" @click="msImportData" :loading="ms.loadingBtn">
-								<v-icon class="mr-2">fas fa-file-import</v-icon> Nhập Thời Khoá Biểu
+								<v-icon class="mr-2">fas fa-file-import</v-icon>
+								Nhập Thời Khoá Biểu
 							</v-btn>
 						</v-col>
 					</v-row>
@@ -70,7 +78,7 @@
 					authorized: false,
 					api: undefined,
 					account: null,
-					loadingBtn: false
+					loadingBtn: false,
 				},
 				console: '<p>Chào bạn !</p>',
 			}
@@ -364,23 +372,22 @@
 							let eventCall = await graphClient.api(`/me/calendars/${calendar.id}/events`).post(event)
 
 							this.console += `<p class="success--text">[MICROSOFT] --> Nhập Event ${index + 1} ${a.subjectName} Thành Công !</p>`
-						
-							if (index +1 == this.user.userSchedule.length){
+
+							if (index + 1 == this.user.userSchedule.length) {
 								this.console += `<p class="success--text">[MICROSOFT] --> <strong>Đồng Bộ Hoá Xong</strong></p>`
 								this.ms.loadingBtn = false
-							}						
+							}
 						}, 500 * index)
 					})
-
 				} catch (err) {
 					this.console += `<p class="danger--text">[MICROSOFT] --> Tạo Lịch Thất Bại Hoặc Nhập Thất Bại</p>`
 					this.ms.loadingBtn = false
-				}	
+				}
 			},
 		},
 		mounted() {
 			let firstTime = true
-			let container = document.getElementsByClassName("console")
+			let container = document.getElementsByClassName('console')
 
 			if (firstTime) {
 				container.scrollTop = container.scrollHeight
@@ -401,6 +408,11 @@
 		height: 30vh;
 		border-radius: 10px 10px 10px 10px;
 		overflow: auto;
+	}
+
+	.signInWithGoogle {
+		width: 50%;
+		height: auto;
 	}
 </style>
 
