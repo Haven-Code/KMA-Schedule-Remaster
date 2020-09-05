@@ -2,7 +2,7 @@
 
 <template>
 	<v-app>
-		<v-app-bar app clipped-left color="amber" dark elevation="3">
+		<v-app-bar v-if="!checkPageNotNavBar" app clipped-left color="amber" dark elevation="3">
 			<v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 			<span class="title ml-3 mr-5">
 				KMA&nbsp;
@@ -11,7 +11,7 @@
 
 			<v-spacer></v-spacer>
 
-			<p class="text-h6 mt-4 font-weight-light text--white hidden-sm-and-down mr-2">
+			<p v-if="user.isLoggined" class="text-h6 mt-4 font-weight-light text--white hidden-sm-and-down mr-2">
 				{{ user.userData.displayName }} ({{ user.userData.studentCode }})
 			</p>
 
@@ -33,7 +33,7 @@
 			</v-menu>
 		</v-app-bar>
 
-		<v-navigation-drawer v-model="drawer" app clipped color="grey lighten-4">
+		<v-navigation-drawer v-if="!checkPageNotNavBar" v-model="drawer" app clipped color="grey lighten-4">
 			<v-list dense class="grey lighten-4">
 				<v-list-item-group mandatory>
 					<v-list-item link exact :to="{ name: 'Dashboard' }">
@@ -124,7 +124,7 @@
 			</template>
 		</v-navigation-drawer>
 
-		<InstallApp v-model="installAppDialog" />
+		<InstallApp v-model="installAppDialog" v-if="!checkPageNotNavBar" />
 
 		<v-main>
 			<router-view></router-view>
@@ -146,6 +146,15 @@
 			...mapState(['user']),
 			getYear() {
 				return moment().format('YYYY')
+			},
+			checkPageNotNavBar() {
+				const denyNavBar = ['LD', 'Login', 'ToS', 'PP']
+
+				if (denyNavBar.indexOf(this.$route.name) >= 0){
+					return true
+				} else {
+					return false
+				}
 			},
 		},
 		data() {
