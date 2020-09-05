@@ -83,7 +83,7 @@ module.exports = {
 					type: "image/png",
 				},
 			],
-			"scope": "./index.html",
+			"scope": ".",
 			"start_url": "./index.html",
 			"background_color": "#ffffff",
 		},
