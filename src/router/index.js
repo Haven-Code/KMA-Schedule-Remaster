@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import LD from '../views/LD.vue'
+import LD from '../views/LandingPage.vue'
 
 import store from '../store/index'
 

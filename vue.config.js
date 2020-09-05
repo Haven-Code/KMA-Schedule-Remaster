@@ -83,12 +83,7 @@ module.exports = {
 					type: "image/png",
 				},
 			],
-			"scope_url": "./index.htm",
-			"intent_filters": {
-				"scope_url_scheme": "https",
-				"scope_url_host": "kma.dhpgo.top",
-				"scope_url_path": "/index.html"
-			},
+			"scope": "./index.html",
 			"start_url": "./index.html",
 			"background_color": "#ffffff",
 		},
