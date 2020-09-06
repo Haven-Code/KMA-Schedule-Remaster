@@ -50,6 +50,11 @@ const routes = [
 				component: () => import(/* webpackChunkName: "about" */ '../views/Dashboard/About.vue')
 			},
 			{
+				path: '/donate',
+				name: 'Donate',
+				component: () => import(/* webpackChunkName: "about" */ '../views/Dashboard/Donate.vue')
+			},
+			{
 				path: '/ics',
 				name: 'Icalendar',
 				component: () => import(/* webpackChunkName: "icalendar" */ '../views/Dashboard/Icalendar.vue')

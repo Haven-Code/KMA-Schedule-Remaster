@@ -88,7 +88,7 @@
 
 			<template v-slot:append>
 				<v-list-item-group mandatory>
-					<v-list-item link class="success" dark @click.stop="installAppDialog = true" v-if="!hideInstallBanner">
+					<v-list-item link class="green lighten-1" dark @click.stop="installAppDialog = true" v-if="!hideInstallBanner">
 						<v-list-item-action>
 							<v-icon class="white--text">fas fa-mobile-alt</v-icon>
 						</v-list-item-action>
@@ -96,6 +96,18 @@
 						<v-list-item-content>
 							<v-list-item-title>
 								Cài Đặt App Ngay !
+							</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+
+					<v-list-item link exact dark class="orange accent-2" :to="{ name: 'Donate' }">
+						<v-list-item-action>
+							<v-icon class="white--text">fas fa-hand-holding-usd</v-icon>
+						</v-list-item-action>
+
+						<v-list-item-content>
+							<v-list-item-title>
+								Ủng Hộ Dev
 							</v-list-item-title>
 						</v-list-item-content>
 					</v-list-item>

@@ -1,7 +1,7 @@
 <!-- @format -->
 
 <template>
-	<v-container class="fill-height" fluid>
+	<v-container class="fill-height amber lighten-4 about" fluid>
 		<v-row align="center" justify="center">
 			<v-col cols="12" sm="10" md="8">
 				<v-card color="amber lighten-3" class="grey--text ">
@@ -93,4 +93,8 @@
 	}
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+	.about {
+		height: 91.5vh;
+	}
+</style>

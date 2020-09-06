@@ -9,11 +9,11 @@
 
 					<v-row>
 						<v-col md="6" sm="12">
-							<!-- <v-btn v-if="!authorized" color="red" dark @click.stop="handleAuthClick">
+							<v-btn v-if="!authorized" color="red" dark @click.stop="handleAuthClick">
 								<v-icon class="mr-2">fab fa-google</v-icon> Kết Nối Với Google
-							</v-btn> -->
+							</v-btn>
 
-							<center><v-img v-if="!authorized" @click.stop="handleAuthClick" src="../../assets/btn_google_signin_dark_normal_web@2x.png" class="signInWithGoogle"></v-img></center>
+							<!-- <center><v-img v-if="!authorized" @click.stop="handleAuthClick" src="../../assets/btn_google_signin_dark_normal_web@2x.png" class="signInWithGoogle"></v-img></center> -->
 
 							<v-btn v-if="authorized" color="red" dark @click.stop="handleSignoutClick" :loading="google.loadingBtn">
 								<v-icon class="mr-2">fas fa-times</v-icon>
